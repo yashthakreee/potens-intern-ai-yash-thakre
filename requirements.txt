@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+chromadb
+pypdf
+python-dotenv
+streamlit
+langdetect
+groq
+google-generativeai
+scikit-learn
+joblib
