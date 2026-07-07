@@ -62,23 +62,48 @@ def load_and_chunk_pdf(path: str):
     return records
 
 
+def load_and_chunk_txt(path: str):
+    """
+    Same chunking logic as PDFs, but for plain-text sources (e.g. policy pages
+    saved as .txt). Plain text has no real page boundaries, so every chunk is
+    recorded as "page 1" -- citations still work, they just won't have a
+    meaningful page number for these files. Good enough for a 24h build; a
+    real next step would be splitting long .txt sources into synthetic
+    "pages" (e.g. every ~3000 characters) so citations are more precise.
+    """
+    with open(path, "r", encoding="utf-8") as f:
+        text = f.read()
+    source_name = os.path.basename(path)
+    records = []
+    for i, chunk in enumerate(_chunk_text(text, config.CHUNK_SIZE, config.CHUNK_OVERLAP)):
+        records.append({
+            "text": chunk,
+            "source": source_name,
+            "page": 1,
+            "chunk_index": i,
+        })
+    return records
+
+
 def ingest_documents(docs_dir: str = "docs"):
     """
-    Walks docs_dir, ingests every PDF found, fits a fresh TF-IDF vectorizer over
-    ALL chunks, and rebuilds the Chroma collection from scratch.
+    Walks docs_dir, ingests every PDF and .txt file found, fits a fresh TF-IDF
+    vectorizer over ALL chunks, and rebuilds the Chroma collection from scratch.
 
     Rebuilding from scratch (not upserting) on every run is intentional: the
     vectorizer's vocabulary depends on the full document set, so if you add a
-    new PDF later, old vectors would no longer be comparable to new ones unless
-    everything is re-embedded together.
+    new document later, old vectors would no longer be comparable to new ones
+    unless everything is re-embedded together.
     """
     pdf_paths = sorted(glob.glob(os.path.join(docs_dir, "*.pdf")))
-    if not pdf_paths:
-        raise FileNotFoundError(f"No PDFs found in {docs_dir}/ -- add your source documents first.")
+    txt_paths = sorted(glob.glob(os.path.join(docs_dir, "*.txt")))
+    all_source_paths = pdf_paths + txt_paths
+    if not all_source_paths:
+        raise FileNotFoundError(f"No PDFs or .txt files found in {docs_dir}/ -- add your source documents first.")
 
     all_ids, all_texts, all_metadatas = [], [], []
-    for path in pdf_paths:
-        records = load_and_chunk_pdf(path)
+    for path in all_source_paths:
+        records = load_and_chunk_pdf(path) if path.endswith(".pdf") else load_and_chunk_txt(path)
         for r in records:
             uid = f"{r['source']}::p{r['page']}::c{r['chunk_index']}"
             all_ids.append(uid)
@@ -118,9 +143,9 @@ def ingest_documents(docs_dir: str = "docs"):
     collection.add(ids=all_ids, embeddings=vectors, documents=all_texts, metadatas=all_metadatas)
 
     return {
-        "documents_ingested": len(pdf_paths),
+        "documents_ingested": len(all_source_paths),
         "chunks_stored": len(all_ids),
-        "files": [os.path.basename(p) for p in pdf_paths],
+        "files": [os.path.basename(p) for p in all_source_paths],
         "vocabulary_size": len(vectorizer.vocabulary_),
     }
 
