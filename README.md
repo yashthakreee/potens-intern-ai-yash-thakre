@@ -149,11 +149,19 @@ between my own early idea and my later, changed decision.
 
 ## AI Use Log
 
-- **Claude (Sonnet 5), via Cowork** -- approx. [fill in message/token count].
+- **Claude (Sonnet 5), via Cowork** -- approx. 10-20 messages.
   Used for: pair-programming the entire backend (ingestion, retrieval,
   FastAPI routes, Streamlit UI), debugging the cosine-vs-L2 distance issue
   found during testing, and drafting this README's design-decisions section
   based on decisions made together during the build.
-- [Add any other tool you use going forward -- Cursor, ChatGPT, Copilot,
-  etc. -- with an approximate count and a one-line description of what it
-  was used for.]
+- **Claude (Sonnet 5), via Claude Code** -- approx. 25 messages.
+  Used for: environment setup (.env, virtualenv, dependency install) and
+  full end-to-end testing of every endpoint, which surfaced a real bug --
+  non-English questions were never actually translated before retrieval
+  because of a misplaced early-return in `_translate()`, so they always
+  fell back to a false "not covered" refusal (fixed in `app/qa.py`);
+  reworking the Streamlit UI (chat history, sidebar controls, parsed
+  contradiction verdicts instead of a raw JSON dump); and repo/submission
+  cleanup (renaming the GitHub repo to match the required
+  `potens-intern-[role]-[name]` format, rewriting commit author identity).
+- No other AI tools were used on this project.
