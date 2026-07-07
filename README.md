@@ -119,6 +119,28 @@ the platform does not handle logistics" from
 `AI-Social-Commerce-Complete-Project-Document.pdf` -- an actual contradiction
 between my own early idea and my later, changed decision.
 
+A second, more consequential case turned up between my own project and one of
+the real external policy docs: `AI-Social-Commerce-Complete-Project-Document.pdf`'s
+Pipeline 5 ("Buyer Trust Network") shares a hashed buyer signal --
+delivery outcome, pincode, order value -- *across all sellers on the
+platform*, and calls this cross-seller sharing "the real moat."
+`WhatsApp_Business_Messaging_Policy.txt` states: "Don't use any data obtained
+from us about a person you message within WhatsApp... for any purpose other
+than as reasonably necessary to support messaging with that person," and "You
+may not forward or otherwise share information from a customer chat with any
+other customer." Asking `/contradict` about this returned `CONFLICT: yes` --
+hashing the buyer's identity doesn't change that the platform's core feature
+repurposes WhatsApp-sourced chat data beyond the single messaging relationship
+it came from, which the policy explicitly prohibits. This is a real compliance
+risk in my own product idea, not a manufactured test case -- worth revisiting
+the Buyer Trust Network design before building it for real.
+
+One retrieval wrinkle surfaced while testing this: a generic topic string like
+"sharing customer data" scored 0.0 confidence on the WhatsApp doc and returned
+no evidence. I had to phrase the topic close to the source vocabulary on both
+sides before both documents' relevant chunks made the top-3 -- the same
+paraphrase weakness already noted below under TF-IDF.
+
 ## What's broken or unfinished right now
 
 - Generation, translation, and the LLM side of `/contradict` are wired up and
