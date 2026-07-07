@@ -1,9 +1,25 @@
 # Document Q&A with Citations
 
-A RAG system over 5+ real documents about AI-driven order-risk scoring for India's
-social-commerce sellers (my own MSME hackathon project docs, plus supporting policy
-documents). Retrieval-backed answers with citations, a refusal mechanism when the
-docs don't cover a question, a document-vs-document contradiction check, and a
+A RAG system over 5 real documents, all connected to one real project of mine
+(an AI order-risk platform for India's social-commerce sellers), rather than
+5 random unrelated files:
+
+1. `Msme-idea.pdf` -- my original product idea document
+2. `AI-Social-Commerce-Complete-Project-Document.pdf` -- the finalized technical spec
+3. `WhatsApp_Business_Messaging_Policy.txt` -- WhatsApp's real, official business messaging policy
+4. `DPDP_Act_2023_Summary.txt` -- summary of India's real 2023 data protection law
+5. `ONDC_Network_Policy_Overview.txt` -- overview of India's real government-backed open commerce network
+
+This set was chosen on purpose: documents 1 and 2 actually **disagree with each
+other** on one real point (who books the courier/handles logistics -- an early
+idea vs. a later, changed decision), which gives `/contradict` a genuine,
+non-fabricated test case. Documents 3-5 are real public policy/legal documents
+that the project in 1-2 would actually need to comply with, so `/ask` can be
+tested against genuinely different, verifiable source material, not just my
+own writing.
+
+Retrieval-backed answers with citations, a refusal mechanism when the docs
+don't cover a question, a document-vs-document contradiction check, and a
 multilingual query flow.
 
 ## How to run it
@@ -12,9 +28,8 @@ multilingual query flow.
 # 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Add your source documents (PDFs) to /docs
-#    Two are already included: Msme-idea.pdf and AI-Social-Commerce-Complete-Project-Document.pdf
-#    Add 3+ more of your own to reach the 5-document minimum.
+# 2. Source documents are already in /docs (5 total -- see above). Add more
+#    of your own the same way: .pdf or .txt both work.
 
 # 3. Set up your LLM key (needed for /ask answer generation, /contradict, and translation --
 #    NOT needed for ingestion/retrieval, which run fully offline)
@@ -37,14 +52,19 @@ streamlit run ui/streamlit_app.py
 
 ## Design decisions
 
-**Chunking strategy: per-page, character-based, with overlap.** Each PDF page is
-extracted separately and split into ~800-character windows with 150 characters of
-overlap between consecutive windows on the *same page*. Chunking per page (rather
-than treating the whole document as one continuous stream) costs a little
-cross-page context, but it means every chunk can cite an exact, verifiable page
-number, which the assignment requires. Character-based (not token-based) chunking
-was chosen for simplicity given the time box; a token-aware chunker (e.g. via
-`tiktoken`) would pack context more precisely and is a natural next step.
+**Chunking strategy: per-page, character-based, with overlap -- tuned to 400/80
+after a real test, not a guess.** Each PDF page (or each .txt file, treated as
+one page) is split into overlapping windows. Chunking per page (rather than
+treating the whole document as one continuous stream) costs a little cross-page
+context, but it means every chunk can cite an exact, verifiable page number,
+which the assignment requires. I started with 800-character chunks / 150
+overlap, but testing the real `/contradict` case (see below) showed a problem:
+a single-sentence factual claim got diluted inside an 800-character chunk full
+of surrounding paragraph text, and dropped out of the top retrieval results
+entirely. Shrinking to 400/80 isolated that sentence, and it correctly became
+the #1 result. Character-based (not token-based) chunking was still chosen for
+simplicity given the time box; a token-aware chunker (e.g. via `tiktoken`)
+would pack context even more precisely and is a natural next step.
 
 **Embeddings: TF-IDF (scikit-learn), not a downloaded neural embedding model.**
 This was a deliberate call, not a shortcut: it keeps the whole retrieval pipeline
@@ -91,25 +111,30 @@ one.** `/contradict` retrieves the top chunks from Document A and Document B
 compare the two evidence sets side by side and explain any conflict. This
 means the contradiction check is only as good as whether the topic string
 actually surfaces relevant chunks in both documents -- worth keeping topic
-strings specific.
+strings specific. Verified with a real, non-fabricated case: asking for
+evidence on "who books the courier and handles logistics" correctly retrieves
+"[the platform] connects to the courier (Shiprocket, Delhivery, etc.) to book
+the shipment" from `Msme-idea.pdf`, and "Seller ships via their own courier...
+the platform does not handle logistics" from
+`AI-Social-Commerce-Complete-Project-Document.pdf` -- an actual contradiction
+between my own early idea and my later, changed decision.
 
 ## What's broken or unfinished right now
 
-- Only 2 of the 5+ required source documents are in `/docs` so far (my own
-  project docs). Still need to add the rest.
-- Generation, translation, and `/contradict` are wired up and structurally
-  tested (they degrade gracefully with a clear error when no LLM key is
-  present), but not yet tested with a real LLM key/response.
-- `CONFIDENCE_THRESHOLD` (currently 0.15) is calibrated from a single manual
-  spot-check, not a real eval set. It needs proper tuning.
+- Generation, translation, and the LLM side of `/contradict` are wired up and
+  structurally tested (retrieval runs for real; they degrade gracefully with
+  a clear error when no LLM key is present), but not yet tested with a real
+  LLM key/response -- add a Groq or Gemini key to `.env` to complete this.
+- `CONFIDENCE_THRESHOLD` (currently 0.15) is calibrated from manual spot-checks
+  across all 5 documents, not a real eval set. It needs proper tuning.
 - No automated tests yet (unit tests, eval set).
 - Stretch goals not started: reranker, human-in-the-loop escalation UI,
   10-question eval set scored on retrieval@k.
 
 ## What I'd build next
 
-1. Finish adding source documents to reach 5+, re-run ingestion, and do a real
-   pass of manual questions to sanity-check citations and refusals.
+1. Add a real LLM key and do a full pass of manual questions across all 5
+   documents to sanity-check generated answers, not just retrieved evidence.
 2. Build the eval set (10 Q&A pairs with known correct chunks) and use it to
    properly tune `CONFIDENCE_THRESHOLD` instead of guessing.
 3. Add a lightweight reranker (e.g. a small cross-encoder) on top of the
