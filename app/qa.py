@@ -25,8 +25,6 @@ def _translate(text: str, target_lang: str) -> str:
     version. Used both directions: question -> English (for retrieval) and
     English answer -> original question language (for the response).
     """
-    if target_lang == "en":
-        return text
     prompt = (
         f"Translate the following text to language code '{target_lang}'. "
         f"Return ONLY the translated text, nothing else, no quotes.\n\nText: {text}"
