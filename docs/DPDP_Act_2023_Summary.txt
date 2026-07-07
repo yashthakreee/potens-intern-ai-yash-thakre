@@ -1,0 +1,97 @@
+Digital Personal Data Protection Act, 2023 (India) -- Summary of Key Provisions
+Sources: Official Act text (meity.gov.in), Ministry of Electronics and Information
+Technology. This is an original summary of publicly available legal provisions,
+not a copy of any third-party article.
+
+Official Preamble (direct from the Act, Government of India, No. 22 of 2023, assented 11 August 2023):
+
+"An Act to provide for the processing of digital personal data in a manner that
+recognises both the right of individuals to protect their personal data and the
+need to process such personal data for lawful purposes and for matters connected
+therewith or incidental thereto."
+
+Background
+
+The DPDP Act, 2023 is India's first comprehensive law governing digital personal
+data protection. It followed the Supreme Court's 2017 ruling in Justice K.S.
+Puttaswamy vs. Union of India, which declared privacy a fundamental right under
+Article 21 of the Constitution. The Act replaces earlier, narrower rules under the
+Information Technology Act, 2000 and the IT (Reasonable Security Practices) Rules,
+2011. Companion Rules (the DPDP Rules) were notified in 2025 with an 18-month
+phased compliance timeline for organisations.
+
+Key Terms
+
+- Data Principal: the individual to whom the personal data relates.
+- Data Fiduciary: any person or organisation that determines the purpose and
+  means of processing personal data (e.g. a business collecting customer data).
+- Data Processor: an entity that processes data on behalf of a Data Fiduciary.
+- Personal Data Breach: any unauthorised processing, or accidental disclosure,
+  acquisition, or loss of access to personal data.
+
+Seven Core Principles the Act Is Built On
+
+1. Consent and transparency
+2. Purpose limitation (data used only for the purpose it was collected for)
+3. Data minimisation (collect only what is necessary)
+4. Accuracy of data
+5. Storage limitation (data not retained longer than necessary)
+6. Reasonable security safeguards
+7. Accountability of the Data Fiduciary
+
+Consent Requirements
+
+- Data Fiduciaries must issue clear, standalone consent notices, in plain
+  language, explaining the specific purpose of data collection.
+- Consent must be freely given, specific, informed, unconditional, and
+  unambiguous, with a clear affirmative action.
+- Verifiable parental/guardian consent is required before processing a child's
+  (under 18) personal data, with limited exemptions for purposes like
+  healthcare, education, and real-time safety monitoring.
+- A Data Principal can withdraw consent at any time, as easily as it was given.
+
+Rights of Data Principals
+
+- Right to access information about their personal data being processed.
+- Right to correction, updating, and erasure of personal data.
+- Right to nominate another individual to exercise these rights on their
+  behalf (e.g. in case of death or incapacity).
+- Right to grievance redressal.
+- Data Fiduciaries must respond to such requests within a specified timeline
+  (up to 90 days depending on the request type).
+
+Obligations of Data Fiduciaries
+
+- Implement reasonable security safeguards to prevent personal data breaches.
+- In the event of a breach, promptly notify both the affected Data Principals
+  and the Data Protection Board of India, in plain language describing the
+  nature and likely consequences of the breach and the steps being taken.
+- Ensure data accuracy and completeness where the data is used to make a
+  decision affecting the Data Principal, or is likely to be shared with
+  another Data Fiduciary.
+- Delete personal data once the purpose for processing is no longer being
+  served, unless retention is required by law (storage limitation).
+- Cross-border data transfer is permitted by default, except to countries
+  specifically restricted by the Central Government via notification (this is
+  a notably more liberal approach than the earlier 2018/2019 draft bills,
+  which proposed stricter data-localisation requirements).
+
+Enforcement
+
+- The Data Protection Board of India is the enforcement body, functioning as
+  a digital-first institution where complaints can be filed and tracked
+  online.
+- Penalties for non-compliance can be substantial (up to hundreds of crores of
+  rupees for serious violations such as failure to prevent a data breach or
+  failure to notify affected individuals).
+
+Why this matters for a chat-commerce order-risk platform
+
+- Any platform that stores buyer phone numbers, addresses, and order/delivery
+  history for risk scoring counts as a Data Fiduciary under this Act.
+- Consent must be collected before storing and using buyer data, including for
+  a cross-seller "buyer trust network" style feature.
+- Data must be minimised, accurate, and deleted once no longer needed --
+  relevant to how long raw chat logs or address history should be retained.
+- Any data breach involving buyer phone numbers or addresses would trigger a
+  mandatory notification obligation.

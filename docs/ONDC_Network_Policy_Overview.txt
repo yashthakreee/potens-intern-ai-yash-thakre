@@ -1,0 +1,74 @@
+ONDC (Open Network for Digital Commerce) -- Network Policy Overview
+Source: ONDC official Resources & Knowledge Base (resources.ondc.org/ondc-network-policy)
+This is a summary in original wording of ONDC's own published policy overview.
+
+What ONDC Is
+
+ONDC is a government-backed initiative to "unbundle" e-commerce in India. Instead
+of one company controlling the whole value chain (customer acquisition, seller
+onboarding, order flow, fulfillment, payments, grievance handling -- the
+traditional "platform model"), ONDC lets separate, independent entities plug into
+a shared, open network to perform each of these functions. A buyer using one app
+(a "Buyer App") can discover and transact with a seller who only ever listed
+their catalogue on a completely different app (a "Seller App").
+
+Key Legal Relationships on the Network
+
+- Buyer and Seller: bound by the terms of the sale itself; title to goods
+  transfers via the invoice.
+- Buyer and their Buyer App: an ongoing relationship formed when the buyer
+  signs up.
+- Seller and their Seller App: an ongoing relationship formed when the seller
+  signs up.
+- Buyer App and Seller App: a transaction-specific contract formed for each
+  individual order.
+- Both apps and ONDC itself: governed by the Network Participant Agreement and
+  the Network Policy (ONDC itself is not a party to any individual sale).
+
+Fundamental Principles All Network Participants Must Follow
+
+- Comply with all applicable laws and regulations.
+- Act in the best interests of end users and the network as a whole.
+- Cooperate with other participants to resolve buyer/seller complaints in a
+  timely manner.
+- Maintain confidentiality and user privacy in transactions.
+- Prohibit illegal or unlawful content on their app.
+- Act fairly, reasonably, and without discrimination -- no participant may be
+  given preferential treatment over another in the same situation.
+- Maintain transparency with end users and other participants.
+
+Structure of the Network Policy (by Chapter)
+
+1. Onboarding, Compliance, and Certification -- eligibility and process to join
+   the network, categorised by role (Seller App, Buyer App, or Gateway).
+2. Business Rules -- roles/responsibilities of Buyer Nodes, Marketplace Seller
+   Nodes, Inventory Seller Nodes, and Gateways; requires non-discriminatory
+   treatment of participants.
+3. Commercial Model -- defines commission structure and commercial terms
+   between participants, aimed at transparency and consumer protection.
+4. Code of Conduct and Ethics -- forbids bribery, requires protection of
+   confidential information, and prohibits conflicts of interest.
+5. Branding Guidelines -- rules for using ONDC's logo, trade name, and
+   trademarks.
+6. Issue and Grievance Management -- mechanisms for resolving complaints filed
+   by buyers, sellers, or other participants.
+7. Network Data Governance -- obligations around protecting private and
+   personal information.
+8. Network Technology Governance -- audit and certification framework to
+   verify participants meet technical standards.
+9. Governance and Disciplinary Policy -- process for handling non-compliance
+   with the Network Participant Agreement or Network Policy.
+
+Why this matters for a chat-commerce order-risk platform
+
+- ONDC formalises exactly the segment of small, unorganised sellers this kind
+  of project targets, but ONDC itself only provides the commerce "rails" --
+  discovery, ordering, and settlement protocol. It does not provide order
+  risk-scoring, RTO prediction, or chat-based order capture.
+- A chat-native order intelligence tool is complementary to ONDC, not
+  competing with it: a seller could take orders over chat (outside ONDC) and
+  separately be discovered via ONDC (inside ONDC) -- both funnel into the same
+  underlying seller operations.
+- ONDC's own Network Data Governance chapter and non-discrimination principle
+  are useful reference points if this project ever needs to formalise its own
+  buyer-trust-network data-sharing rules.
