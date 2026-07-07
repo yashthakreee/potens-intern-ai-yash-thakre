@@ -20,8 +20,14 @@ TFIDF_MAX_FEATURES = 4096
 # Character-based (not token-based) chunking -- chosen for simplicity in a 24h build,
 # see README "Design Decisions" for the full reasoning.
 # Chunking happens PER PAGE, so every chunk can cite an exact page number.
-CHUNK_SIZE = 800       # characters per chunk
-CHUNK_OVERLAP = 150    # characters shared between consecutive chunks on the same page
+#
+# 400/80 was chosen over an initial 800/150 after a real test: with 800-char
+# chunks, a single-sentence factual claim (used for the /contradict test case
+# between our own two source docs) got diluted by surrounding paragraph text
+# and dropped out of the top results entirely. Shrinking the chunk size
+# isolated that sentence and it correctly became the #1 retrieved result.
+CHUNK_SIZE = 400       # characters per chunk
+CHUNK_OVERLAP = 80     # characters shared between consecutive chunks on the same page
 
 # --- Retrieval ---
 TOP_K = 5
